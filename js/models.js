@@ -72,12 +72,8 @@ class StoryList {
    *
    * Returns the new Story instance
    */
-
   async addStory(user, { title, author, url }) {
-    //TODO: UNIMPLEMENTED: complete this function!
-
     //TODO: error handling?
-
     const options = {
       method: 'POST',
       baseURL: BASE_URL,

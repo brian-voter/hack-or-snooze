@@ -34,6 +34,7 @@ function updateNavOnLogin() {
   $(".main-nav-links").show();
   $navLogin.hide();
   $navLogOut.show();
+  $navSubmit.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 

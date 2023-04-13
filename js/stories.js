@@ -62,12 +62,17 @@ async function getFormDataAndAddStory() {
 
   const newStory = await storyList.addStory(currentUser, { title, author, url });
   storyList.stories.unshift(newStory);
+}
 
+/**
+ * Submit story when the user clicks the submit button
+ */
+async function onSubmitClick(evt) {
+  console.debug("submit-story", evt);
+  evt.preventDefault();
   hidePageComponents();
+  await getFormDataAndAddStory();
   putStoriesOnPage();
 }
 
-$addStoryForm.on("submit", function(evt){
-  evt.preventDefault();
-  getFormDataAndAddStory();
-});
+$addStoryForm.on("submit", onSubmitClick);
