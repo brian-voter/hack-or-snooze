@@ -212,4 +212,37 @@ class User {
       return null;
     }
   }
+
+  async addFavorite(story) {
+    const options = {
+      method: 'POST',
+      baseURL: BASE_URL,
+      url: `/users/${this.username}/favorites/${story.storyId}`,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        token: this.loginToken,
+      }
+    };
+
+    const response = await axios.request(options);
+    console.log(response.data);
+    this.favorites.push(story);
+  }
+
+  async removeFavorite(story) {
+    const options = {
+      method: 'DELETE',
+      baseURL: BASE_URL,
+      url: `/users/${this.username}/favorites/${story.storyId}`,
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        token: this.loginToken,
+      }
+    };
+
+    await axios.request(options);
+
+    const storyIndex = this.favorites.indexOf(story);
+    this.favorites.splice(storyIndex, 1);
+  }
 }
