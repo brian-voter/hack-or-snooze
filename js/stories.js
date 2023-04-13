@@ -51,17 +51,23 @@ function putStoriesOnPage() {
   $allStoriesList.show();
 }
 
-async function submitStory(evt) {
-  evt.preventDefault();
+/**
+ * This function is called when user submits add story form
+ * Retrieves the values from the form, creates a story and adds it to storyList
+ */
+async function getFormDataAndAddStory() {
   const title = $("#title-input").val();
   const author = $("#author-input").val();
   const url = $("#url-input").val();
 
   const newStory = await storyList.addStory(currentUser, { title, author, url });
-  console.log(newStory);
   storyList.stories.unshift(newStory);
+
   hidePageComponents();
   putStoriesOnPage();
 }
 
-$addStoryForm.on("submit", submitStory);
+$addStoryForm.on("submit", function(evt){
+  evt.preventDefault();
+  getFormDataAndAddStory();
+});
