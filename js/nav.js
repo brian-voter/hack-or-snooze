@@ -36,3 +36,14 @@ function updateNavOnLogin() {
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+/** Upon user click, show the add story form */
+function navSubmitClick(evt) {
+  console.debug("navSubmitClick", evt);
+  evt.preventDefault();
+  hidePageComponents();
+  $addStoryForm.trigger("reset");
+  $addStoryForm.show();
+}
+
+$navSubmit.on("click", navSubmitClick);

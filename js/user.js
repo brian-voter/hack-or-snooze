@@ -46,6 +46,7 @@ async function signup(evt) {
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
 
+  hidePageComponents();
   $signupForm.trigger("reset");
 }
 
