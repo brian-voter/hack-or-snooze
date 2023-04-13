@@ -91,7 +91,10 @@ class StoryList {
 
     const response = await axios.request(options);
 
-    return new Story(response.data.story);
+    const newStory = new Story(response.data.story);
+    storyList.stories.unshift(newStory);
+
+    return newStory;
   }
 }
 

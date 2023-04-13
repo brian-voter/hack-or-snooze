@@ -61,7 +61,8 @@ async function getFormDataAndAddStory() {
   const url = $("#url-input").val();
 
   const newStory = await storyList.addStory(currentUser, { title, author, url });
-  storyList.stories.unshift(newStory); //TODO: move me
+  const $story = generateStoryMarkup(newStory);
+  $allStoriesList.prepend($story);
 }
 
 /**
@@ -70,9 +71,9 @@ async function getFormDataAndAddStory() {
 async function onSubmitClick(evt) {
   console.debug("submit-story", evt);
   evt.preventDefault();
-  hidePageComponents();
   await getFormDataAndAddStory();
-  putStoriesOnPage(); //TODO: just add the new story to the top
+  $addStoryForm.hide();
+  $allStoriesList.show();
 }
 
 $addStoryForm.on("submit", onSubmitClick);
