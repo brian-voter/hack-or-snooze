@@ -73,8 +73,29 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory( /* user, newStory */) {
+  async addStory(user, { title, author, url }) {
     //TODO: UNIMPLEMENTED: complete this function!
+
+    //TODO: error handling?
+
+    const options = {
+      method: 'POST',
+      baseURL: BASE_URL,
+      url: '/stories',
+      headers: { 'Content-Type': 'application/json' },
+      data: {
+        token: user.loginToken,
+        story: {
+          title, author, url
+        },
+      }
+    };
+
+    const response = await axios.request(options);
+
+    console.log(response.data);
+
+    return new Story(response.data.story);
   }
 }
 
@@ -90,13 +111,13 @@ class User {
    */
 
   constructor({
-                username,
-                name,
-                createdAt,
-                favorites = [],
-                ownStories = []
-              },
-              token) {
+    username,
+    name,
+    createdAt,
+    favorites = [],
+    ownStories = []
+  },
+    token) {
     this.username = username;
     this.name = name;
     this.createdAt = createdAt;
