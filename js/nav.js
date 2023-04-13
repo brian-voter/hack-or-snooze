@@ -39,13 +39,12 @@ function updateNavOnLogin() {
 }
 
 /** Upon user click, show the add story form */
-//TODO: rename navShowAddStoryFormClick (?)
-function navSubmitClick(evt) {
-  console.debug("navSubmitClick", evt);
+function navShowAddStoryFormClick(evt) {
+  console.debug("navShowAddStoryFormClick", evt);
   evt.preventDefault();
   hidePageComponents();
   $addStoryForm.trigger("reset");
   $addStoryForm.show();
 }
 
-$navSubmit.on("click", navSubmitClick);
+$navSubmit.on("click", navShowAddStoryFormClick);

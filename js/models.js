@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    //TODO: UNIMPLEMENTED: complete this function!
-    return "hostname.com";
+    const url = new URL(this.url);
+    return url.hostname;
   }
 }
 
@@ -67,7 +67,6 @@ class StoryList {
   }
 
 
-  //TODO: move adding the story here
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}

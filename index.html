@@ -34,8 +34,10 @@
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
-  <div class="nav-right">
+  <div class="nav-left">
     <a class="nav-link hidden" href="#" id="nav-submit">Submit</a>
+  </div>
+  <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
@@ -44,13 +46,13 @@
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
-  <form id="add-story-form" class="hidden"> //TODO: placeholders
+  <form id="add-story-form" class="hidden">
     <label for="title-input">Title:</label>
-    <input id="title-input" type="text" name="title-input" required>
+    <input id="title-input" type="text" name="title-input" placeholder="Story Title" required>
     <label for="author-input">Author:</label>
-    <input id="author-input" type="text" name="author-input" required>
+    <input id="author-input" type="text" name="author-input" placeholder="Story Author" required>
     <label for="url-input">URL:</label>
-    <input id="url-input" type="text" name="url-input" required>
+    <input id="url-input" type="text" name="url-input" placeholder="Story URL" required>
     <button id="add-story-btn" type="submit">Add Story</button>
   </form>
   <!-- loading message (removed by JS after stories loaded) -->
