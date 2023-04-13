@@ -19,6 +19,12 @@
 
 /* Individual stories */
 
+.heart {
+  font-size: 0.75rem;
+  margin: 0 2px;
+  cursor: pointer;
+}
+
 .story-link {
   color: black;
   font-size: 0.85rem;

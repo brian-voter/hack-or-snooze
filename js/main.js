@@ -6,12 +6,16 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
+const $favoriteStoriesList = $("#favorite-stories-list");
+const $storiesSubContainer = $("#stories-sub-container");
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
 const $addStoryForm = $("#add-story-form");
 
 const $navSubmit = $("#nav-submit");
+const $navFavorites = $("#nav-favorites");
+
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
@@ -24,6 +28,7 @@ const $navLogOut = $("#nav-logout");
 function hidePageComponents() {
   const components = [
     $allStoriesList,
+    $favoriteStoriesList,
     $loginForm,
     $signupForm,
     $addStoryForm,
@@ -38,10 +43,12 @@ async function start() {
 
   // "Remember logged-in user" and log in, if credentials in localStorage
   await checkForRememberedUser();
-  await getAndShowStoriesOnStart();
+  // await getAndShowStoriesOnStart();
 
   // if we got a logged-in user
   if (currentUser) updateUIOnUserLogin();
+
+  await getAndShowStoriesOnStart();
 }
 
 // Once the DOM is entirely loaded, begin the app

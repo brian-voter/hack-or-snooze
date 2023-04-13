@@ -1,5 +1,8 @@
 "use strict";
 
+const FAVORITED_HEART_ICON_CLASS = "fas fa-heart";
+const NOT_FAVORITED_HEART_ICON_CLASS = "far fa-heart";
+
 // This is the global list of the stories, an instance of StoryList
 let storyList;
 
@@ -10,6 +13,8 @@ async function getAndShowStoriesOnStart() {
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
+
+  $storiesSubContainer.on("click", ".heart", toggleFavorite);
 }
 
 /**
@@ -22,9 +27,24 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
+  // far heart is not filled in
+  // fas heart for filled
+
   const hostName = story.getHostName();
+
+  //TODO: remove this
+  if (story.title === "Favorite Test Post123") {
+    console.debug("story", story);
+    console.debug("favorites:", currentUser.favorites);
+    console.debug("favorite?", storyList.isFavoriteStory(currentUser, story.storyId));
+  }
+
+
   return $(`
       <li id="${story.storyId}">
+        <span class="heart">
+          <i class="${getHeartClassForStory(story)}"></i>
+        </span>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -35,7 +55,13 @@ function generateStoryMarkup(story) {
     `);
 }
 
-/** Gets list of stories from server, generates their HTML, and puts on page. */
+function getHeartClassForStory(story) {
+  //TODO: change this to new function
+  return storyList.isFavoriteStory(currentUser, story.storyId) ? FAVORITED_HEART_ICON_CLASS
+    : NOT_FAVORITED_HEART_ICON_CLASS;
+}
+
+/** For each story in the local list, generates its HTML, and puts it on page. */
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
@@ -49,6 +75,22 @@ function putStoriesOnPage() {
   }
 
   $allStoriesList.show();
+}
+
+/** For each story the user has favorited, generates its HTML, and puts it on page. */
+
+function putFavoritesOnPage() {
+  console.debug("putFavoritesOnPage");
+
+  $favoriteStoriesList.empty();
+
+  // loop through all of our favorite stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
+
+  $favoriteStoriesList.show();
 }
 
 /**
@@ -77,3 +119,26 @@ async function onSubmitClick(evt) {
 }
 
 $addStoryForm.on("submit", onSubmitClick);
+
+/**
+ * Toggle a story's favorite status when a user clicks its heart icon
+ * @param {*} evt
+ */
+async function toggleFavorite(evt) {
+  const $iconElement = $(evt.target);
+  console.debug("toggleFavorite", evt);
+  const storyId = $iconElement.parent().parent().attr("id");
+  console.debug("storyId", storyId);
+
+  const story = storyList.getStoryById(storyId);
+
+  if (currentUser.favorites.includes(story)) {
+    await currentUser.removeFavorite(story);
+    $iconElement.removeClass(FAVORITED_HEART_ICON_CLASS);
+    $iconElement.addClass(NOT_FAVORITED_HEART_ICON_CLASS);
+  } else {
+    await currentUser.addFavorite(story);
+    $iconElement.removeClass(NOT_FAVORITED_HEART_ICON_CLASS);
+    $iconElement.addClass(FAVORITED_HEART_ICON_CLASS);
+  }
+}

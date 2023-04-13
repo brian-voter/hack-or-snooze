@@ -95,6 +95,20 @@ class StoryList {
 
     return newStory;
   }
+
+  /**
+   * Gets a story from local storage given its id
+   */
+  getStoryById(storyId) {
+    return this.stories.find((curStory) => curStory.storyId === storyId);
+  }
+
+  /**
+   * Returns true iff the story represented by the storyId is a favorite
+   */
+  isFavoriteStory(user, storyId) {
+    return user.favorites.some((curStory) => curStory.storyId === storyId);
+  }
 }
 
 
