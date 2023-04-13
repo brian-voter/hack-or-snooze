@@ -39,6 +39,7 @@ function updateNavOnLogin() {
 }
 
 /** Upon user click, show the add story form */
+//TODO: rename navShowAddStoryFormClick (?)
 function navSubmitClick(evt) {
   console.debug("navSubmitClick", evt);
   evt.preventDefault();

@@ -44,13 +44,13 @@
 
 <!-- area for stories (all stories, user stories, favorites) -->
 <section class="stories-container container">
-  <form id="add-story-form" class="hidden">
+  <form id="add-story-form" class="hidden"> //TODO: placeholders
     <label for="title-input">Title:</label>
-    <input id="title-input" type="text" name="title-input">
+    <input id="title-input" type="text" name="title-input" required>
     <label for="author-input">Author:</label>
-    <input id="author-input" type="text" name="author-input">
+    <input id="author-input" type="text" name="author-input" required>
     <label for="url-input">URL:</label>
-    <input id="url-input" type="text" name="url-input">
+    <input id="url-input" type="text" name="url-input" required>
     <button id="add-story-btn" type="submit">Add Story</button>
   </form>
   <!-- loading message (removed by JS after stories loaded) -->
