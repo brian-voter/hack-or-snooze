@@ -2,16 +2,20 @@
 
 const FAVORITED_HEART_ICON_CLASS = "fas fa-heart";
 const NOT_FAVORITED_HEART_ICON_CLASS = "far fa-heart";
+const INFINITE_SCROLL_PX_FROM_BOTTOM = 100;
+const INFINITE_SCROLL_COOLDOWN_MILLIS = 2000;
 
 // This is the global list of the stories, an instance of StoryList
 let storyList;
+
+let lastInfiniteScrollMillis = 0;
 
 /** Get and show stories when site first loads. */
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
 
-  if(currentUser){
+  if (currentUser) {
     storyList.addStoriesToMap(currentUser.favorites);
     storyList.addStoriesToMap(currentUser.ownStories);
   }
@@ -31,8 +35,6 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  console.debug("generateStoryMarkup", story);
-
   const hostName = story.getHostName();
 
   return $(`
@@ -57,7 +59,7 @@ function generateStoryMarkup(story) {
  * @returns {string} string CSS class
  */
 function getHeartClassForStory(story) {
-  if(!currentUser){
+  if (!currentUser) {
     return "hidden";
   }
   return storyList.isFavoriteStory(currentUser, story.storyId) ? FAVORITED_HEART_ICON_CLASS
@@ -155,3 +157,25 @@ async function toggleFavorite(evt) {
     $iconElement.addClass(FAVORITED_HEART_ICON_CLASS);
   }
 }
+
+function onScroll(evt) {
+  if (Date.now() - lastInfiniteScrollMillis > INFINITE_SCROLL_COOLDOWN_MILLIS) {
+    if ($(window).scrollTop() + $(window).height() > $(document).height() - INFINITE_SCROLL_PX_FROM_BOTTOM) {
+      addStoriesInfiniteScroll();
+      lastInfiniteScrollMillis = Date.now();
+    }
+  }
+}
+
+async function addStoriesInfiniteScroll() {
+  console.debug("addStoriesInfiniteScroll");
+
+  const newStories = await storyList.getStoriesInfiniteScroll();
+
+  for (let story of newStories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+}
+
+$(window).scroll(onScroll);

@@ -85,6 +85,28 @@ class StoryList {
   }
 
 
+  async getStoriesInfiniteScroll(skip = this.stories.length, limit = 25) {
+    const response = await axios({
+      url: `${BASE_URL}/stories`,
+      method: "GET",
+      params: {
+        skip,
+        limit,
+      }
+    });
+
+    // turn plain old story objects from API into instances of Story class
+    const stories = response.data.stories.map(story => new Story(story));
+
+    for (const story of stories) {
+      this.stories.push(story);
+      this.storyMap[story.storyId] = story;
+    }
+
+    return stories;
+  }
+
+
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}
