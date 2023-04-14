@@ -42,6 +42,11 @@ class StoryList {
     this.addStoriesToMap(stories);
   }
 
+  //TODO: think about it
+  // get stories() {
+  //   return Object.values(this.storyMap);
+  // }
+
   /**
    * Adds the specified stories to the story map, which maps storyId to story instance
    * @param {Story[]} storiesToAdd
@@ -257,10 +262,10 @@ class User {
       headers: { 'Content-Type': 'application/json' },
       data: {
         token: this.loginToken,
-      }
+      },
     };
 
-    const response = await axios.request(options);
+    await axios.request(options);
     this.favorites.push(story);
   }
 
@@ -277,7 +282,7 @@ class User {
       headers: { 'Content-Type': 'application/json' },
       data: {
         token: this.loginToken,
-      }
+      },
     };
 
     await axios.request(options);
