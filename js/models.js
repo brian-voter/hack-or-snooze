@@ -113,8 +113,7 @@ class StoryList {
       return newStory;
     }
     catch (error) {
-      console.log("error=", error);
-      if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached");
+      if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached.");
       const err = error.response.data.error;
       switch (err.status) {
         case 400: throw new BadURLError("Please input valid URL.");
@@ -180,24 +179,35 @@ class User {
    */
 
   static async signup(username, password, name) {
-    const response = await axios({
-      url: `${BASE_URL}/signup`,
-      method: "POST",
-      data: { user: { username, password, name } },
-    });
+    try{
+      const response = await axios({
+        url: `${BASE_URL}/signup`,
+        method: "POST",
+        data: { user: { username, password, name } },
+      });
 
-    const { user } = response.data;
+      const { user } = response.data;
 
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      response.data.token
-    );
+      return new User(
+        {
+          username: user.username,
+          name: user.name,
+          createdAt: user.createdAt,
+          favorites: user.favorites,
+          ownStories: user.stories
+        },
+        response.data.token
+      );
+    } catch(error) {
+      console.log("error=", error);
+      if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached.");
+      const err = error.response.data.error;
+      switch (err.status) {
+        case 409: throw new UserAlreadyExistsError("Username already in use.")
+      }
+      throw new Error(`Error: ${err.message}`);
+    }
+
   }
 
   /** Login in user with API, make User instance & return it.

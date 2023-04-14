@@ -107,7 +107,7 @@ form > hr {
 }
 
 /* Errors */
-#add-story-error {
+.error {
   color: red;
 }
 

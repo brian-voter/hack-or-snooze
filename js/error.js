@@ -23,3 +23,11 @@ class NotAuthenticatedError extends Error {
     this.name = "NotAuthenticatedError";
   }
 }
+
+/** Error class for when the username is already in use */
+class UserAlreadyExistsError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "UserAlreadyExistsError";
+  }
+}

@@ -60,8 +60,8 @@
       <div>
         <label for="url-input">URL:</label>
         <input id="url-input" type="text" name="url-input" placeholder="Story URL" required>
+        <span id="add-story-error" class="error hidden"></span>
       </div>
-      <span id="add-story-error" class="error hidden"></span>
       <button id="add-story-btn" type="submit">Add Story</button>
     </form>
     <!-- loading message (removed by JS after stories loaded) -->
@@ -103,6 +103,7 @@
       <div class="login-input">
         <label for="signup-username">username</label>
         <input id="signup-username" autocomplete="new-username">
+        <span id="username-error" class="error hidden"></span>
       </div>
       <div class="login-input">
         <label for="signup-password">password</label>
