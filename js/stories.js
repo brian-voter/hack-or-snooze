@@ -10,6 +10,10 @@ let storyList;
 
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
+
+  storyList.addStoriesToMap(currentUser.favorites)
+  storyList.addStoriesToMap(currentUser.ownStories);
+
   $storiesLoadingMsg.remove();
 
   putStoriesOnPage();
@@ -25,20 +29,9 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
-
-  // far heart is not filled in
-  // fas heart for filled
+  console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
-
-  //TODO: remove this
-  if (story.title === "Favorite Test Post123") {
-    console.debug("story", story);
-    console.debug("favorites:", currentUser.favorites);
-    console.debug("favorite?", storyList.isFavoriteStory(currentUser, story.storyId));
-  }
-
 
   return $(`
       <li id="${story.storyId}">
@@ -55,8 +48,13 @@ function generateStoryMarkup(story) {
     `);
 }
 
+/**
+ * Gets the CSS class for a story's favorite icon based on whether or not
+ * the story has been favorited by the user
+ * @param {Story} story
+ * @returns {string} string CSS class
+ */
 function getHeartClassForStory(story) {
-  //TODO: change this to new function
   return storyList.isFavoriteStory(currentUser, story.storyId) ? FAVORITED_HEART_ICON_CLASS
     : NOT_FAVORITED_HEART_ICON_CLASS;
 }

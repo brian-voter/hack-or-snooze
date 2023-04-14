@@ -37,6 +37,19 @@ class Story {
 class StoryList {
   constructor(stories) {
     this.stories = stories;
+
+    this.storyMap = {};
+    this.addStoriesToMap(stories);
+  }
+
+  /**
+   * Adds the specified stories to the story map, which maps storyId to story instance
+   * @param {Story[]} storiesToAdd
+   */
+  addStoriesToMap(storiesToAdd) {
+    for (const story of storiesToAdd) {
+      this.storyMap[story.storyId] = story;
+    }
   }
 
   /** Generate a new StoryList. It:
@@ -91,16 +104,19 @@ class StoryList {
     const response = await axios.request(options);
 
     const newStory = new Story(response.data.story);
+
     storyList.stories.unshift(newStory);
+    this.storyMap[newStory.storyId] = newStory;
 
     return newStory;
   }
 
+
   /**
-   * Gets a story from local storage given its id
+   * Gets a story from local storage by id
    */
   getStoryById(storyId) {
-    return this.stories.find((curStory) => curStory.storyId === storyId);
+    return this.storyMap[storyId];
   }
 
   /**
@@ -141,6 +157,7 @@ class User {
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
   }
+
 
   /** Register new user in API, make User instance & return it.
    *
@@ -227,6 +244,11 @@ class User {
     }
   }
 
+  /**
+   * Favorites a story by POST request to the server and adds the story
+   * to the favorites array
+   * @param {Story} story the story to favorite
+   */
   async addFavorite(story) {
     const options = {
       method: 'POST',
@@ -239,10 +261,14 @@ class User {
     };
 
     const response = await axios.request(options);
-    console.log(response.data);
     this.favorites.push(story);
   }
 
+  /**
+   * Removes a story by DELETE request to the server, and removes the story
+   * from the favorites array
+   * @param {Story} story the story to unfavorite
+   */
   async removeFavorite(story) {
     const options = {
       method: 'DELETE',

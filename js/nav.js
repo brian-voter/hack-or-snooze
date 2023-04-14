@@ -50,6 +50,7 @@ function navShowAddStoryFormClick(evt) {
 
 $navSubmit.on("click", navShowAddStoryFormClick);
 
+/** Upon user click, show the favorites "window" */
 function navShowFavoritesClick(evt) {
   console.debug("navShowFavoritesClick", evt);
   evt.preventDefault();
