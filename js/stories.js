@@ -11,10 +11,8 @@ let storyList;
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
 
-  if(currentUser){
-    storyList.addStoriesToMap(currentUser.favorites);
-    storyList.addStoriesToMap(currentUser.ownStories);
-  }
+  storyList.addStoriesToMap(currentUser.favorites);
+  storyList.addStoriesToMap(currentUser.ownStories);
 
   $storiesLoadingMsg.remove();
 
@@ -57,9 +55,6 @@ function generateStoryMarkup(story) {
  * @returns {string} string CSS class
  */
 function getHeartClassForStory(story) {
-  if(!currentUser){
-    return "hidden";
-  }
   return storyList.isFavoriteStory(currentUser, story.storyId) ? FAVORITED_HEART_ICON_CLASS
     : NOT_FAVORITED_HEART_ICON_CLASS;
 }
