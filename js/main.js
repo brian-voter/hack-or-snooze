@@ -22,6 +22,7 @@ const $navLogOut = $("#nav-logout");
 
 const $addStoryError = $("#add-story-error");
 const $usernameError = $("#username-error");
+const $credentialsError = $("#credentials-error");
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -48,10 +49,10 @@ async function start() {
   await checkForRememberedUser();
   // await getAndShowStoriesOnStart();
 
+  await getAndShowStoriesOnStart();
+
   // if we got a logged-in user
   if (currentUser) updateUIOnUserLogin();
-
-  await getAndShowStoriesOnStart();
 }
 
 // Once the DOM is entirely loaded, begin the app

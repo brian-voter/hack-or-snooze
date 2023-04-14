@@ -179,7 +179,7 @@ class User {
    */
 
   static async signup(username, password, name) {
-    try{
+    try {
       const response = await axios({
         url: `${BASE_URL}/signup`,
         method: "POST",
@@ -198,12 +198,12 @@ class User {
         },
         response.data.token
       );
-    } catch(error) {
+    } catch (error) {
       console.log("error=", error);
       if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached.");
       const err = error.response.data.error;
       switch (err.status) {
-        case 409: throw new UserAlreadyExistsError("Username already in use.")
+        case 409: throw new UserAlreadyExistsError("Username already in use.");
       }
       throw new Error(`Error: ${err.message}`);
     }
@@ -217,24 +217,35 @@ class User {
    */
 
   static async login(username, password) {
-    const response = await axios({
-      url: `${BASE_URL}/login`,
-      method: "POST",
-      data: { user: { username, password } },
-    });
 
-    const { user } = response.data;
+    try {
+      const response = await axios({
+        url: `${BASE_URL}/login`,
+        method: "POST",
+        data: { user: { username, password } },
+      });
 
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      response.data.token
-    );
+      const { user } = response.data;
+
+      return new User(
+        {
+          username: user.username,
+          name: user.name,
+          createdAt: user.createdAt,
+          favorites: user.favorites,
+          ownStories: user.stories
+        },
+        response.data.token
+      );
+    } catch (error) {
+      console.log("error=", error);
+      if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached.");
+      const err = error.response.data.error;
+      switch (err.status) {
+        case 401: throw new IncorrectCredentialsError("Your username or password is incorrect.");
+      }
+      throw new Error(`Error: ${err.message}`);
+    }
   }
 
   /** When we already have credentials (token & username) for a user,

@@ -31,3 +31,12 @@ class UserAlreadyExistsError extends Error {
     this.name = "UserAlreadyExistsError";
   }
 }
+
+/** Error class for when the username or password are incorrect */
+class IncorrectCredentialsError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "IncorrectCredentialsError";
+  }
+}
+
