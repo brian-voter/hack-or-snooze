@@ -49,12 +49,19 @@
   <!-- area for stories (all stories, user stories, favorites) -->
   <section class="stories-container container">
     <form id="add-story-form" class="hidden">
-      <label for="title-input">Title:</label>
-      <input id="title-input" type="text" name="title-input" placeholder="Story Title" required>
-      <label for="author-input">Author:</label>
-      <input id="author-input" type="text" name="author-input" placeholder="Story Author" required>
-      <label for="url-input">URL:</label>
-      <input id="url-input" type="text" name="url-input" placeholder="Story URL" required>
+      <div>
+        <label for="title-input">Title:</label>
+        <input id="title-input" type="text" name="title-input" placeholder="Story Title" required>
+      </div>
+      <div>
+        <label for="author-input">Author:</label>
+        <input id="author-input" type="text" name="author-input" placeholder="Story Author" required>
+      </div>
+      <div>
+        <label for="url-input">URL:</label>
+        <input id="url-input" type="text" name="url-input" placeholder="Story URL" required>
+      </div>
+      <span id="add-story-error" class="error hidden"></span>
       <button id="add-story-btn" type="submit">Add Story</button>
     </form>
     <!-- loading message (removed by JS after stories loaded) -->
@@ -114,6 +121,7 @@
   <script src="js/nav.js"></script>
   <script src="js/user.js"></script>
   <script src="js/stories.js"></script>
+  <script src="js/error.js"></script>
 
 </body>
 

@@ -11,7 +11,7 @@ let storyList;
 async function getAndShowStoriesOnStart() {
   storyList = await StoryList.getStories();
 
-  storyList.addStoriesToMap(currentUser.favorites)
+  storyList.addStoriesToMap(currentUser.favorites);
   storyList.addStoriesToMap(currentUser.ownStories);
 
   $storiesLoadingMsg.remove();
@@ -103,6 +103,8 @@ async function getFormDataAndAddStory() {
   const newStory = await storyList.addStory(currentUser, { title, author, url });
   const $story = generateStoryMarkup(newStory);
   $allStoriesList.prepend($story);
+  $addStoryError.hide();
+
 }
 
 /**
@@ -111,9 +113,17 @@ async function getFormDataAndAddStory() {
 async function onSubmitClick(evt) {
   console.debug("submit-story", evt);
   evt.preventDefault();
-  await getFormDataAndAddStory();
-  $addStoryForm.hide();
-  $allStoriesList.show();
+
+  try {
+    await getFormDataAndAddStory();
+    $addStoryForm.hide();
+    $allStoriesList.show();
+  }
+  catch (error) {
+    console.log(error);
+    $addStoryError.text(error.message);
+    $addStoryError.show();
+  }
 }
 
 $addStoryForm.on("submit", onSubmitClick);

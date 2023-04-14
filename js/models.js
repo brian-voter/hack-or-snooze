@@ -92,7 +92,6 @@ class StoryList {
    * Returns the new Story instance
    */
   async addStory(user, { title, author, url }) {
-    //TODO: error handling?
     const options = {
       method: 'POST',
       baseURL: BASE_URL,
@@ -105,15 +104,24 @@ class StoryList {
         },
       }
     };
+    try {
+      const response = await axios.request(options);
+      const newStory = new Story(response.data.story);
+      storyList.stories.unshift(newStory);
+      this.storyMap[newStory.storyId] = newStory;
 
-    const response = await axios.request(options);
-
-    const newStory = new Story(response.data.story);
-
-    storyList.stories.unshift(newStory);
-    this.storyMap[newStory.storyId] = newStory;
-
-    return newStory;
+      return newStory;
+    }
+    catch (error) {
+      console.log("error=", error);
+      if (error.response === undefined) throw new ServerUnreachableError("Server can't be reached");
+      const err = error.response.data.error;
+      switch (err.status) {
+        case 400: throw new BadURLError("Please input valid URL.");
+        case 401: throw new NotAuthenticatedError("Please refresh and login again.");
+      }
+      throw new Error(`Error: ${err.message}`);
+    }
   }
 
 
